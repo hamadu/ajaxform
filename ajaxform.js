@@ -39,6 +39,13 @@ ajaxform = function(){
   var _confirm_checkbox_checked = '<span class="checked">[v]</span>';
   var _confirm_checkbox_unchecked = '<span class="unchecked">[&nbsp;]</span>';
   
+  var _ajaxform_field = 'ajaxform_field';
+  var _ajaxform_input = 'ajaxform_input';
+  var _ajaxform_confirm = 'ajaxform_confirm';
+  var _ajaxform_complete = 'ajaxform_complete';
+  var _ajaxform_processed = 'ajaxform_processed'
+  var _ajaxform_error = 'ajaxform_error';
+  
   var _which_type = function(element) {
     if (element.tagName == 'INPUT') {
       return $(element).attr('type');
@@ -51,27 +58,48 @@ ajaxform = function(){
   }
   
   var _input = function(formname) {
-    $('#'+formname+' .input').show();
-    $('#'+formname+' .confirm').hide();
+    $('#'+formname+' .'+_ajaxform_input).show();
+    $('#'+formname+' .'+_ajaxform_confirm).hide();
     $(window).scrollTop(0);
   }
 
   var _confirm = function(formname) {
-    $('#'+formname+' .input').hide();
-    $('#'+formname+' .confirm').show();
+    $('#'+formname+' .'+_ajaxform_input).hide();
+    $('#'+formname+' .'+_ajaxform_confirm).show();
     $(window).scrollTop(0);
   }
 
   var _complete = function(formname) {
     $('#'+formname).hide();
-    $('.complete').show();
+    $('.'+_ajaxform_complete).show();
     $(window).scrollTop(0);
   }
 
-  var _processError = function(formname, data) {
+  var _remove_error = function(formname) {
+    var error_fields = $('#'+formname+' .error').get();
+    for (var i = 0 ; i < error_fields.length ; i++) {
+      $(error_fields[i]).removeClass('error');
+    }
+
+    var error_messages = $('#'+formname+' .'+_ajaxform_error).get();
+    for (var i = 0 ; i < error_messages.length ; i++) {
+      $(error_messages[i]).html('');
+    }
+  }
+  
+  var _process_error = function(formname, data) {
     for (var field in data['error']) {
+      var input_field = $('#'+formname+' #error_'+field).get(0);
+      while (!$(input_field).hasClass(_ajaxform_field) && input_field) {
+        input_field = input_field.parentNode;
+      }
+      if (!input_field) {
+        continue;
+      }
+      $(input_field).addClass('error');
+
       var message = data['error'][field]['message'];
-      $('#'+formname+' span#error_'+field).append(message + '<br/>');
+      $('#'+formname+' #error_'+field).html(message + '<br/>');
     }
     for (var field in data['global_error']) {
       var message = data['error'][field];
@@ -79,7 +107,7 @@ ajaxform = function(){
   }
   
   var _confirm_input_text = function(value) {
-    return '<input type="text" disabled="disabled" value ="%s" />'.replace("%s", value);
+    return '<input type="text" disabled="disabled" value="%s" />'.replace("%s", value);
   }
   
   var _confirm_textarea = function(value) {
@@ -110,6 +138,11 @@ ajaxform = function(){
   return {
     ready : function(formname) {
       var form = $('form#' + formname);
+      var fields = $('fieldset', form).children();
+      for (var i = 0 ; i < fields.length ; i++) {
+        $(fields[i], form).addClass(_ajaxform_field);
+      }
+      
       var list = $(':input', form).get();
       for (var i = 0 ; i < list.length ; i++) {
         var each = list[i];
@@ -124,27 +157,27 @@ ajaxform = function(){
             baseParent = baseParent.parentNode;
           }
           
-          if ($(baseParent).hasClass('ajaxform_processed')) {
+          if ($(baseParent).hasClass(_ajaxform_processed)) {
             continue;
           }
-          $(baseParent).addClass('ajaxform_processed');
+          $(baseParent).addClass(_ajaxform_processed);
 
-          var error = $('<span class="error" id="error_%s">'.replace('%s', id));
-          var input = $('<span class="input %s"></span>'.replace('%s', type));
-          var confirm = $('<span class="confirm" id="confirm_%s">'.replace('%s', id));
+          var error = $('<div class="%s1" id="error_%s2"></div>'.replace('%s1', _ajaxform_error).replace('%s2', id));
+          var input = $('<span class="%s1 %s2"></span>'.replace('%s1', _ajaxform_input).replace('%s2', type));
+          var confirm = $('<span class="%s1" id="confirm_%s2">'.replace('%s1', _ajaxform_confirm).replace('%s2', id));
 
           var inputs = $(baseParent).children().get();
           for (var j = 0 ; j < inputs.length ; j++) {
             input.append(inputs[j]);
           }
 
-          $(baseParent).append(input);
           $(baseParent).append(error);
+          $(baseParent).append(input);
           $(baseParent).append(confirm);
         }
       }
-      $('.ajaxform_processed', formname).each(function(){
-        $(this).removeClass('ajaxform_processed');
+      $('.' + _ajaxform_processed, form).each(function(){
+        $(this).removeClass(_ajaxform_processed);
       });
       
       $(form).attr('next_state', 'confirm');
@@ -170,11 +203,12 @@ ajaxform = function(){
       if (action == '') {
         action = $('#'+formname).attr('action');
       }
+      _remove_error(formname);
       $('#'+formname).ajaxPost(function(result_data){
         $('#'+formname+' span.error').html('');
         var data = eval('(' + result_data + ')');
         if (data['has_error']) {
-          _processError(formname, data);
+          _process_error(formname, data);
           if (callback_error) {
             callback_error();
           }
@@ -185,7 +219,7 @@ ajaxform = function(){
             _confirm(formname);
             $('#'+formname).attr('next_state', 'complete');
 
-            $('#'+formname+' span.input').each(function(){
+            $('#'+formname+' span.'+_ajaxform_input).each(function(){
               if ($(this).hasClass('text') || $(this).hasClass('file')) {
                 var value = $('input', this).attr('value');
                 var name = $('input', this).attr('id');
@@ -193,8 +227,13 @@ ajaxform = function(){
                 $('#confirm_' + name).html(_confirm_input_text(value));
               }
               if ($(this).hasClass('password')) {
+                var value = $('input', this).attr('value');
+                if (value != "") {
+                  value = '********';
+                }
+
                 var name = $('input', this).attr('id');
-                $('#confirm_' + name).html(_confirm_input_text('********'));
+                $('#confirm_' + name).html(_confirm_input_text(value));
               }
               if ($(this).hasClass('textarea')) {
                 var value = $('textarea', this).attr('value');
@@ -234,7 +273,7 @@ ajaxform = function(){
                   }
                   values.push(value);
                 }
-                
+
                 var first = $('input', this).get(0);
                 var html = "";
                 if ($(this).hasClass('radio')) {

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+  <head>
+    <title>ajaxform sample with twitter bootstrap</title>
+    <script type="text/javascript" charset="utf-8" src="jquery-1.6.2.js"></script>
+    <script type="text/javascript" charset="utf-8" src="ajaxform.js"></script>
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.0.min.css">
+    <style type="text/css" media="screen">
+      .ajaxform_confirm {
+        display: none;
+      }
+      
+      .ajaxform_complete {
+        display: none;
+      }
+      
+      .ajaxform_error {
+        color: #ff0000;
+      }
+      
+      .checked {
+        color: #339933;
+      }
+      
+      .unchecked {
+        color: #999999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ajaxform_complete">
+      completed.
+    </div>
+    <form accept-charset="UTF-8" action="response_valid.json" class="new_user" id="new_user" method="post">
+      <fieldset>
+        <div class="clearfix">
+          <label for="user_name">Name</label>
+          <div class="input">
+            <input id="user_name" name="user[name]" size="30" type="text" /> 
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_file">file</label>
+          <div class="input">
+            <input id="user_file" name="user[file]" size="30" type="file" /> 
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_profile">profile</label>
+          <div class="input">
+            <textarea id="user_profile" name="user[profile]" /></textarea>
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_email">Email</label>
+          <div class="input">
+            <input id="user_email" name="user[email]" size="30" type="text" /> 
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_password">Password</label><br /> 
+          <div class="input">
+            <input id="user_password" name="user[password]" size="30" type="password" /> 
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_radio_1">checks</label>
+          <div class="input">
+            <label for="user_checkbox_1">
+              <input id="user_checkbox_1" name="user[check_1]" size="30" type="checkbox" />
+              <span>Checkbox one</span>
+            </label>
+            <label for="user_checkbox_2">
+              <input id="user_checkbox_2" name="user[check_2]" size="30" type="checkbox" />
+              <span>Checkbox two</span>
+            </label>
+          </div>
+        </div> 
+        <div class="clearfix"> 
+          <label for="user_radio_1">radioes</label>
+          <div class="input">
+            <label for="user_radio_1">
+              <input id="user_radio_1" name="user[radio]" size="30" type="radio" />
+              <span>radio1</span>
+            </label>
+            <label for="user_radio_2">
+              <input id="user_radio_2" name="user[radio]" size="30" type="radio" />
+              <span>radio2</span>
+            </label>
+            <label for="user_radio_3">
+              <input id="user_radio_3" name="user[radio]" size="30" type="radio" />
+              <span>radio3</span>
+            </label>
+          </div>
+        </div> 
+        <div class="clearfix actions"> 
+          <div class="ajaxform_input"> 
+            <input id="submit" class="btn primary" name="commit" type="button" value="Sign up" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
+            <input id="submit" class="btn" name="commit" type="button" value="Invalid sign up" onclick="ajaxform.submit('new_user', 'response_invalid.json');"/> 
+            <input id="submit" class="btn" name="commit" type="button" value="Another Invalid sign up" onclick="ajaxform.submit('new_user', 'response_another_invalid.json');"/> 
+          </div> 
+          <div class="ajaxform_confirm"> 
+            <input id="confirm" class="btn primary" name="commit" type="button" value="Confirm" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
+            <input id="cancel" class="btn" name="commit" type="button" value="Cancel" onclick="ajaxform.cancel('new_user');"/> 
+          </div> 
+        </div> 
+      </fieldset>
+    </form> 
+  </body>
+  
+  <script type="text/javascript" charset="utf-8">
+    $(document).ready(function(){
+      ajaxform.ready('new_user');
+    });
+  </script>
+</html>

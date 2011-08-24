@@ -4,112 +4,115 @@
     <script type="text/javascript" charset="utf-8" src="jquery-1.6.2.js"></script>
     <script type="text/javascript" charset="utf-8" src="ajaxform.js"></script>
     <style type="text/css" media="screen">
-      .confirm {
-        display: none;
-      }
-      
-      .complete {
-        display: none;
-      }
-      
-      .error {
-        color: #ff0000;
-      }
-      
-      .checked {
-        color: #339933;
-      }
-      
-      .unchecked {
-        color: #999999;
-      }
+    .ajaxform_confirm {
+      display: none;
+    }
+    
+    .ajaxform_complete {
+      display: none;
+    }
+    
+    .ajaxform_error {
+      color: #ff0000;
+    }
+    
+    .checked {
+      color: #339933;
+    }
+    
+    .unchecked {
+      color: #999999;
+    }
     </style>
   </head>
   <body>
-    <div class="complete">
+    <div class="ajaxform_complete">
       completed.
     </div>
     <form accept-charset="UTF-8" action="response_valid.json" class="new_user" id="new_user" method="post">
-      <div class="field">
-        <label for="user_name">Name</label>
-        <div>
-          <input id="user_name" name="user[name]" size="30" type="text" /> 
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_file">file</label>
-        <div>
-          <input id="user_file" name="user[file]" size="30" type="file" /> 
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_profile">profile</label>
-        <div>
-          <textarea id="user_profile" name="user[profile]" /></textarea>
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_email">Email</label>
-        <div>
-          <input id="user_email" name="user[email]" size="30" type="text" /> 
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_password">Password</label><br /> 
-        <div>
-          <input id="user_password" name="user[password]" size="30" type="password" /> 
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_select">Select</label><br /> 
-        <div>
-          <select id="user_select" name="user[select]"> 
-            <option>abc</option>
-            <option>def</option>
-            <option>ghi</option>
-          </select>
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_radio_1">checks</label>
-        <div>
-          <input id="user_checkbox_1" name="user[check_1]" size="30" type="checkbox" />
-          <label for="user_checkbox_1">
-            Checkbox one
-          </label>
-          <input id="user_checkbox_2" name="user[check_2]" size="30" type="checkbox" />
-          <label for="user_checkbox_2">
-            Checkbox two
-          </label>
-        </div>
-      </div> 
-      <div class="field"> 
-        <label for="user_radio_1">radioes</label>
-        <div>
-          <input id="user_radio_1" name="user[radio]" size="30" type="radio" />
-          <label for="user_radio_1">
-            Radio1
-          </label>
-          <input id="user_radio_2" name="user[radio]" size="30" type="radio" />
-          <label for="user_radio_2">
-            Radio2
-          </label>
-          <input id="user_radio_3" name="user[radio]" size="30" type="radio" />
-          <label for="user_radio_3">
-            Radio3
-          </label>
-        </div>
-      </div> 
-      <div class="actions"> 
-        <div class="input"> 
-          <input id="submit" name="commit" type="button" value="Sign up" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
-          <input id="submit" name="commit" type="button" value="Invalid sign up" onclick="ajaxform.submit('new_user', 'response_invalid.json');"/> 
+      <fieldset>
+        <div class="field">
+          <label for="user_name">Name</label>
+          <div>
+            <input id="user_name" name="user[name]" size="30" type="text" /> 
+          </div>
         </div> 
-        <div class="confirm"> 
-          <input id="confirm" name="commit" type="button" value="Confirm" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
-          <input id="cancel" name="commit" type="button" value="Cancel" onclick="ajaxform.cancel('new_user');"/> 
+        <div class="field"> 
+          <label for="user_file">file</label>
+          <div>
+            <input id="user_file" name="user[file]" size="30" type="file" /> 
+          </div>
         </div> 
-      </div> 
+        <div class="field"> 
+          <label for="user_profile">profile</label>
+          <div>
+            <textarea id="user_profile" name="user[profile]" /></textarea>
+          </div>
+        </div> 
+        <div class="field"> 
+          <label for="user_email">Email</label>
+          <div>
+            <input id="user_email" name="user[email]" size="30" type="text" /> 
+          </div>
+        </div> 
+        <div class="field"> 
+          <label for="user_password">Password</label><br /> 
+          <div>
+            <input id="user_password" name="user[password]" size="30" type="password" /> 
+          </div>
+        </div> 
+        <div class="field"> 
+          <label for="user_select">Select</label><br /> 
+          <div>
+            <select id="user_select" name="user[select]"> 
+              <option>abc</option>
+              <option>def</option>
+              <option>ghi</option>
+            </select>
+          </div>
+        </div> 
+        <div class="field"> 
+          <label for="user_checkbox_1">checks</label>
+          <div>
+            <input id="user_checkbox_1" name="user[check_1]" size="30" type="checkbox" />
+            <label for="user_checkbox_1">
+              Checkbox one
+            </label>
+            <input id="user_checkbox_2" name="user[check_2]" size="30" type="checkbox" />
+            <label for="user_checkbox_2">
+              Checkbox two
+            </label>
+          </div>
+        </div> 
+        <div class="field"> 
+          <label for="user_radio_1">radioes</label>
+          <div>
+            <input id="user_radio_1" name="user[radio]" size="30" type="radio" />
+            <label for="user_radio_1">
+              Radio1
+            </label>
+            <input id="user_radio_2" name="user[radio]" size="30" type="radio" />
+            <label for="user_radio_2">
+              Radio2
+            </label>
+            <input id="user_radio_3" name="user[radio]" size="30" type="radio" />
+            <label for="user_radio_3">
+              Radio3
+            </label>
+          </div>
+        </div> 
+        <div class="actions"> 
+          <div class="ajaxform_input"> 
+            <input id="submit" name="commit" type="button" value="Sign up" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
+            <input id="submit" name="commit" type="button" value="Invalid sign up" onclick="ajaxform.submit('new_user', 'response_invalid.json');"/> 
+            <input id="submit" name="commit" type="button" value="Another Invalid sign up" onclick="ajaxform.submit('new_user', 'response_another_invalid.json');"/> 
+          </div> 
+          <div class="ajaxform_confirm"> 
+            <input id="confirm" name="commit" type="button" value="Confirm" onclick="ajaxform.submit('new_user', 'response_valid.json');"/> 
+            <input id="cancel" name="commit" type="button" value="Cancel" onclick="ajaxform.cancel('new_user');"/> 
+          </div> 
+        </div> 
+      </fieldset>
     </form> 
   </body>
   

@@ -1,0 +1,10 @@
+{　"has_error" : "false",
+  "error" : {
+    "user_checkbox_1" : {
+      "message" : "please check at least one."
+    },
+    "user_radio_1" : {
+      "message" : "radio is mandatory. "
+    } 
+  }
+}
